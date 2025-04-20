@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react'
+import { toast } from 'sonner'
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -17,24 +17,16 @@ export default function ContactForm() {
   })
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [error, setError] = useState<string | null>(null)
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus('loading')
     setError(null)
+    setShowSuccessMessage(false)
 
     try {
-      // Store in Supabase
-      const { error: dbError } = await supabase
-        .from('inquiries')
-        .insert([{
-          ...formData,
-          created_at: new Date().toISOString()
-        }])
-
-      if (dbError) throw dbError
-
-      // Send email notification
+      // Send email using the API
       const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: {
@@ -45,10 +37,14 @@ export default function ContactForm() {
 
       if (!response.ok) {
         const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to send email')
+        throw new Error(errorData.error || 'Failed to send message')
       }
-
+      
+      // Show success message
+      toast.success("Message sent successfully! We'll get back to you soon.")
+      
       setStatus('success')
+      setShowSuccessMessage(true)
       setFormData({
         name: '',
         email: '',
@@ -65,6 +61,17 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {showSuccessMessage && (
+        <div className="rounded-md bg-green-50 p-4 mb-4 border border-green-200">
+          <div className="flex items-center">
+            <CheckCircle2 className="h-5 w-5 text-green-500 mr-2" />
+            <p className="text-sm font-medium text-green-800">
+              Your message has been sent successfully! We'll get back to you soon.
+            </p>
+          </div>
+        </div>
+      )}
+      
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm font-medium">
@@ -149,17 +156,6 @@ export default function ContactForm() {
           'Send Message'
         )}
       </Button>
-
-      {status === 'success' && (
-        <div className="rounded-md bg-green-50 p-4">
-          <div className="flex items-center">
-            <CheckCircle2 className="h-5 w-5 text-green-400 mr-2" />
-            <p className="text-sm text-green-700">
-              Thank you for your message! We have received it and will get back to you soon. A confirmation email has been sent to your email address.
-            </p>
-          </div>
-        </div>
-      )}
 
       {status === 'error' && (
         <div className="rounded-md bg-red-50 p-4">
