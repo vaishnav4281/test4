@@ -1,16 +1,18 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend('re_bjfAG6br_CVY5EZR8Wk2FWRhqos6mrB3j');
 
 export async function POST(request: Request) {
   try {
     const { name, email, phone, message, service } = await request.json();
 
+    const adminEmail = process.env.ADMIN_EMAIL || 'satheeshk8188@gmail.com';
+
     // Send email using Resend
-    await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: 'Financial Advisor <onboarding@resend.dev>',
-      to: process.env.ADMIN_EMAIL || 'satheeshk8188@gmail.com',
+      to: adminEmail,
       subject: `New Contact Form Submission: ${service}`,
       html: `
         <h2>New Contact Form Submission</h2>
@@ -23,7 +25,15 @@ export async function POST(request: Request) {
       `,
     });
 
-    return NextResponse.json({ success: true });
+    if (error) {
+      console.error('Resend API error:', error);
+      return NextResponse.json(
+        { error: 'Failed to send email' },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error('Error sending email:', error);
     return NextResponse.json(
