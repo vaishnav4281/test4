@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Phone, Mail, MapPin, Clock } from "lucide-react"
-import ContactForm from "@/components/ContactForm"
+
 
 export default function ContactPage() {
   return (
@@ -105,30 +105,39 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* WhatsApp Connection */}
-            <div>
-              <h2 className="text-3xl font-bold mb-6">Connect on WhatsApp</h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                Get instant answers to your queries. Chat with us directly on WhatsApp for quick assistance.
-              </p>
+            {/* WhatsApp Connection - Primary Contact Method */}
+            <div className="lg:col-span-2">
+              <div className="bg-slate-50 rounded-2xl p-8 md:p-12 text-center border border-slate-200 shadow-sm">
+                <Badge className="mb-6 px-4 py-1.5 text-sm bg-[#25D366]/10 text-[#25D366] border-[#25D366]/20 hover:bg-[#25D366]/20">
+                  Recommended
+                </Badge>
+                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-slate-900">
+                  Chat with Satheesan Koroth
+                </h2>
+                <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+                  The fastest way to get help with your insurance policies, premium payments, or claims is to chat with us directly on WhatsApp.
+                </p>
 
-              <Card className="bg-[#25D366]/5 border-[#25D366]/20 overflow-hidden">
-                <CardContent className="p-8 text-center">
-                  <div className="w-20 h-20 bg-[#25D366] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[#25D366]/30 animate-pulse">
-                    <Phone className="h-10 w-10 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3 text-slate-900">Chat with Satheesan Koroth</h3>
-                  <p className="text-slate-600 mb-8 max-w-md mx-auto">
-                    Click the button below to start a WhatsApp conversation. We are available to help you with policy details, premium payments, and claims.
-                  </p>
-                  <Button asChild size="lg" className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold px-8 h-14 rounded-full text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 w-full sm:w-auto">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <Button asChild size="lg" className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold px-8 h-16 rounded-full text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 w-full sm:w-auto min-w-[200px]">
                     <Link href="https://wa.me/919447218188" target="_blank">
-                      <Phone className="mr-2 h-5 w-5" />
+                      <Phone className="mr-2 h-6 w-6" />
                       Open WhatsApp
                     </Link>
                   </Button>
-                </CardContent>
-              </Card>
+
+                  <Button asChild variant="outline" size="lg" className="h-16 rounded-full text-lg px-8 border-2 w-full sm:w-auto min-w-[200px]">
+                    <Link href="tel:+919447218188">
+                      <Phone className="mr-2 h-5 w-5" />
+                      Call Now
+                    </Link>
+                  </Button>
+                </div>
+
+                <p className="mt-8 text-sm text-slate-500">
+                  Available Monday to Saturday, 9:00 AM - 6:00 PM
+                </p>
+              </div>
             </div>
           </div>
         </div>
