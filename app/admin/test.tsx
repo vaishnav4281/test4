@@ -10,11 +10,11 @@ export default function TestComponent() {
     const testConnection = async () => {
       try {
         console.log("Starting test...")
-        
+
         // Test environment variables
         const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-        const key = process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY
-        
+        const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
         console.log("Environment variables:", {
           url: url ? "Present" : "Missing",
           key: key ? "Present" : "Missing"
@@ -42,7 +42,7 @@ export default function TestComponent() {
         console.log("Response data:", data)
 
         setStatus("Connection successful!")
-        
+
       } catch (err) {
         console.error("Detailed error:", err)
         setError(err instanceof Error ? err.message : "Unknown error occurred")
@@ -73,7 +73,7 @@ export default function TestComponent() {
             <pre className="bg-gray-50 p-2 rounded text-sm overflow-x-auto">
               {JSON.stringify({
                 hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-                hasKey: !!process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY
+                hasKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
               }, null, 2)}
             </pre>
           </div>
